@@ -90,11 +90,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="#" id="library-link">Biblioteca</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="settings-link">Configurações</a>
-      </li>
     </ul>
-    <button id="pink-highlight-btn" class="btn btn-secondary ml-auto">Marcar Texto Pink</button>
     <button id="zoom-toggle" class="btn btn-secondary ml-2">Zoom</button>
   </div>
 </nav>
@@ -130,11 +126,7 @@
         <li class="nav-item active">
           <a class="nav-link" href="#" id="library-link-book">Biblioteca</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="settings-link-book">Configurações</a>
-        </li>
       </ul>
-      <button id="pink-highlight-btn-book" class="btn btn-secondary ml-auto">Marcar Texto Pink</button>
       <button id="zoom-toggle-book" class="btn btn-secondary ml-2">Zoom</button>
     </div>
   </nav>
@@ -269,19 +261,19 @@
       });
     });
 
+    document.getElementById('library-link-book').addEventListener('click', showLibrary);
+
     // Evento para alternar entre Modo Escuro
     document.getElementById('dark-mode-toggle').addEventListener('click', function() {
       const body = document.body;
       if (body.classList.contains('dark-theme')) {
         body.classList.remove('dark-theme');
         this.textContent = 'Modo Escuro';
-        // Definindo cores padrão para o PDF
         document.getElementById('pdf-render').style.backgroundColor = '#fff';
         document.getElementById('pdf-render').style.color = '#000';
       } else {
         body.classList.add('dark-theme');
         this.textContent = 'Modo Padrão';
-        // Definindo cores para o PDF em modo escuro
         document.getElementById('pdf-render').style.backgroundColor = '#333';
         document.getElementById('pdf-render').style.color = '#fff';
       }
@@ -312,7 +304,6 @@
       showLibrary();
     });
 
-    // Evento para alternar o modo de zoom
     document.getElementById('zoom-toggle').addEventListener('click', function() {
       zoomedIn = !zoomedIn;
       if (zoomedIn) {
@@ -324,30 +315,15 @@
       }
     });
 
-    // Evento para alterar o tamanho da fonte e destacar o texto
-    document.getElementById('font-size').addEventListener('change', function() {
-      const tamanhoSelecionado = this.value;
-      const textoParaModificar = document.getElementById('page-number');
-
-      // Alterar tamanho da fonte
-      textoParaModificar.style.fontSize = tamanhoSelecionado + 'px';
-
-      // Remover qualquer destaque anterior
-      textoParaModificar.innerHTML = textoParaModificar.textContent;
-
-      // Adicionar marcação de destaque
-      textoParaModificar.innerHTML = textoParaModificar.innerHTML.replace(/(Página \d+ de)/g, '<span class="highlight-yellow">$1</span>');
-    });
-
-    // Evento para aplicar marcação de texto rosa pink
-    document.getElementById('pink-highlight-btn').addEventListener('click', function() {
-      const textoParaMarcar = document.getElementById('page-number');
-
-      // Remover qualquer marcação anterior
-      textoParaMarcar.innerHTML = textoParaMarcar.textContent;
-
-      // Adicionar marcação rosa pink
-      textoParaMarcar.innerHTML = textoParaMarcar.innerHTML.replace(/(Página \d+ de)/g, '<span class="highlight-pink">$1</span>');
+    document.getElementById('zoom-toggle-book').addEventListener('click', function() {
+      zoomedIn = !zoomedIn;
+      if (zoomedIn) {
+        document.body.classList.add('zoom-mode');
+        this.textContent = 'Sair do Zoom';
+      } else {
+        document.body.classList.remove('zoom-mode');
+        this.textContent = 'Zoom';
+      }
     });
 
   });
