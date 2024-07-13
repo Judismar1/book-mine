@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jady's Book</title>
+<title style="background-color: gray;" >Jady's Book</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
   body {
@@ -11,6 +11,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* 100% da altura da viewport */
+    background-color: gray;
   }
   .dark-theme {
     background-color: #333;
@@ -114,16 +115,9 @@
 
 <!-- Conteúdo do Livro (Oculto Inicialmente) -->
 <div id="book-page" class="container mt-4" style="display: none;">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav style="background-color: gray;" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#" id="back-link">Voltar</a>
     <div class="ml-auto">
-      <select id="font-size" class="form-control">
-        <option value="16">16px</option>
-        <option value="18">18px</option>
-        <option value="20">20px</option>
-        <option value="22">22px</option>
-        <option value="24">24px</option>
-      </select>
     </div>
   </nav>
   <div id="pdf-container">
