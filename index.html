@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title style="background-color: gray;" >Jady's Book</title>
+<title style="background-color: gray;">Jady's Book</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
   body {
     font-family: 'Arial', sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 100% da altura da viewport */
+    min-height: 100vh;
     background-color: gray;
   }
   .dark-theme {
@@ -18,7 +18,7 @@
     color: #fff;
   }
   .footer {
-    margin-top: auto; /* Coloca o rodapé no final da página */
+    margin-top: auto;
     width: 100%;
     background-color: #f8f9fa;
     padding: 20px 0;
@@ -36,8 +36,8 @@
   #pdf-render {
     width: 100%;
     height: auto;
-    background-color: #333; /* Cor de fundo do PDF em modo escuro */
-    color: #fff; /* Cor do texto do PDF em modo escuro */
+    background-color: #333;
+    color: #fff;
     padding: 20px;
   }
   .card-img-top {
@@ -52,25 +52,29 @@
     z-index: 2;
     position: relative;
   }
-  /* Estilo para ocultar a barra de navegação quando o livro está aberto */
   .navbar {
     transition: transform 0.3s ease;
   }
-
   .navbar.hidden {
     transform: translateY(-100%);
   }
-
-  /* Estilo para o botão de modo escuro */
   .btn-dark-mode {
     margin-right: 10px;
   }
-
-  /* Estilo para marcação de texto rosa pink */
   .highlight-pink {
     background-color: pink;
-    color: #333; /* Cor do texto em contraste com o rosa */
+    color: #333;
     padding: 2px;
+  }
+  .zoom-mode .navbar, .zoom-mode .footer {
+    display: none;
+  }
+  .zoom-mode #pdf-render {
+    height: 100vh;
+    padding: 0;
+  }
+  .zoom-mode .page-navigation {
+    bottom: 10px;
   }
 </style>
 </head>
@@ -91,6 +95,7 @@
       </li>
     </ul>
     <button id="pink-highlight-btn" class="btn btn-secondary ml-auto">Marcar Texto Pink</button>
+    <button id="zoom-toggle" class="btn btn-secondary ml-2">Zoom</button>
   </div>
 </nav>
 
@@ -115,9 +120,22 @@
 
 <!-- Conteúdo do Livro (Oculto Inicialmente) -->
 <div id="book-page" class="container mt-4" style="display: none;">
-  <nav style="background-color: gray;" class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#" id="back-link">Voltar</a>
-    <div class="ml-auto">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBookNav" aria-controls="navbarBookNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarBookNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" id="library-link-book">Biblioteca</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" id="settings-link-book">Configurações</a>
+        </li>
+      </ul>
+      <button id="pink-highlight-btn-book" class="btn btn-secondary ml-auto">Marcar Texto Pink</button>
+      <button id="zoom-toggle-book" class="btn btn-secondary ml-2">Zoom</button>
     </div>
   </nav>
   <div id="pdf-container">
@@ -149,7 +167,8 @@
         pageNum = 1,
         pageIsRendering = false,
         pageNumIsPending = null,
-        hideTimeout;
+        hideTimeout,
+        zoomedIn = false;
 
     const scale = 1.5,
           canvas = document.querySelector('#pdf-render'),
@@ -232,15 +251,14 @@
       document.getElementById('dark-mode-toggle').style.visibility = 'visible';
     }
 
-    // Função para mostrar o livro em tela cheia
+    // Função para mostrar o livro
     function showBook() {
       document.getElementById('main-content').style.display = 'none';
       document.getElementById('book-page').style.display = 'block';
       document.querySelector('.navbar').classList.add('hidden');
-      startHideTimeout();
+      document.getElementById('dark-mode-toggle').style.visibility = 'visible';
     }
 
-    // Event listeners para navegação
     document.getElementById('home-link').addEventListener('click', showLibrary);
     document.getElementById('library-link').addEventListener('click', showLibrary);
 
@@ -292,6 +310,18 @@
     // Evento para voltar à biblioteca
     document.getElementById('back-link').addEventListener('click', function() {
       showLibrary();
+    });
+
+    // Evento para alternar o modo de zoom
+    document.getElementById('zoom-toggle').addEventListener('click', function() {
+      zoomedIn = !zoomedIn;
+      if (zoomedIn) {
+        document.body.classList.add('zoom-mode');
+        this.textContent = 'Sair do Zoom';
+      } else {
+        document.body.classList.remove('zoom-mode');
+        this.textContent = 'Zoom';
+      }
     });
 
     // Evento para alterar o tamanho da fonte e destacar o texto
