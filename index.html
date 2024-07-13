@@ -8,22 +8,26 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* 100% da altura da viewport */
     }
     .dark-theme {
       background-color: #333;
       color: #fff;
     }
     .footer {
-      position: fixed;
-      bottom: 0;
+      margin-top: auto; /* Coloca o rodapé no final da página */
       width: 100%;
+      background-color: #f8f9fa;
+      padding: 20px 0;
+      text-align: center;
     }
     .page-navigation {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
       position: fixed;
-      bottom: 80px; /* ajuste conforme necessário */
+      bottom: 80px;
       width: 100%;
       padding: 0 20px;
       z-index: 3;
@@ -115,7 +119,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer mt-auto py-3 bg-light">
+  <footer class="footer py-3">
     <div class="container">
       <span class="text-muted">© 2024 Jady's Book</span>
     </div>
@@ -261,6 +265,10 @@
         startHideTimeout();
       });
 
+      // Evento para voltar à biblioteca
+      document.getElementById('back-link').addEventListener('click', function() {
+        showLibrary();
+      });
     });
   </script>
 </body>
