@@ -22,10 +22,27 @@
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
+      position: fixed;
+      bottom: 80px; /* ajuste conforme necessário */
+      width: 100%;
+      padding: 0 20px;
+      z-index: 3;
     }
     #pdf-render {
       width: 100%;
       height: auto;
+    }
+    .card-img-top {
+      max-width: 100%;
+      height: auto;
+    }
+    #main-content .card {
+      z-index: 1;
+      position: relative;
+    }
+    .btn-primary.read-book {
+      z-index: 2;
+      position: relative;
     }
   </style>
 </head>
