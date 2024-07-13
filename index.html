@@ -28,6 +28,9 @@
       padding: 0 20px;
       z-index: 3;
     }
+    .hide {
+      display: none;
+    }
     #pdf-render {
       width: 100%;
       height: auto;
@@ -43,6 +46,16 @@
     .btn-primary.read-book {
       z-index: 2;
       position: relative;
+    }
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 10;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -82,7 +95,7 @@
   </div>
 
   <!-- Conteúdo do Livro (Oculto Inicialmente) -->
-  <div id="book-page" class="container mt-4" style="display: none;">
+  <div id="book-page" class="container mt-4 fullscreen" style="display: none;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#" id="back-link">Voltar</a>
       <div class="ml-auto">
@@ -124,7 +137,8 @@
       let pdfDoc = null,
           pageNum = 1,
           pageIsRendering = false,
-          pageNumIsPending = null;
+          pageNumIsPending = null,
+          hideTimeout;
 
       const scale = 1.5,
             canvas = document.querySelector('#pdf-render'),
@@ -209,6 +223,7 @@
       function showBook() {
         document.getElementById('main-content').style.display = 'none';
         document.getElementById('book-page').style.display = 'block';
+        startHideTimeout();
       }
 
       // Event listeners para navegação
@@ -233,6 +248,20 @@
 
       document.getElementById('font-size').addEventListener('change', function() {
         document.getElementById('pdf-container').style.fontSize = this.value + 'px';
+      });
+
+      // Função para esconder os botões após 10 segundos
+      function startHideTimeout() {
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+          document.querySelector('.page-navigation').classList.add('hide');
+        }, 10000);
+      }
+
+      // Mostrar os botões quando a tela for clicada
+      document.querySelector('#book-page').addEventListener('click', () => {
+        document.querySelector('.page-navigation').classList.remove('hide');
+        startHideTimeout();
       });
     });
   </script>
