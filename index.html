@@ -23,7 +23,7 @@
       justify-content: space-between;
       margin-top: 20px;
       position: fixed;
-      bottom: 80px; /* ajuste conforme necessário */
+      bottom: 80px;
       width: 100%;
       padding: 0 20px;
       z-index: 3;
@@ -39,14 +39,6 @@
       max-width: 100%;
       height: auto;
     }
-    #main-content .card {
-      z-index: 1;
-      position: relative;
-    }
-    .btn-primary.read-book {
-      z-index: 2;
-      position: relative;
-    }
     .fullscreen {
       position: fixed;
       top: 0;
@@ -56,6 +48,10 @@
       background: #fff;
       z-index: 10;
       overflow: hidden;
+      padding-top: 20px; /* Ajuste para o conteúdo não ficar escondido */
+    }
+    .navbar.hidden {
+      display: none !important;
     }
   </style>
 </head>
@@ -95,20 +91,7 @@
   </div>
 
   <!-- Conteúdo do Livro (Oculto Inicialmente) -->
-  <div id="book-page" class="container mt-4 fullscreen" style="display: none;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#" id="back-link">Voltar</a>
-      <div class="ml-auto">
-        <button id="theme-toggle" class="btn btn-secondary">Alterar Tema</button>
-        <select id="font-size" class="form-control">
-          <option value="16">16px</option>
-          <option value="18">18px</option>
-          <option value="20">20px</option>
-          <option value="22">22px</option>
-          <option value="24">24px</option>
-        </select>
-      </div>
-    </nav>
+  <div id="book-page" class="container fullscreen" style="display: none;">
     <div id="pdf-container">
       <canvas id="pdf-render"></canvas>
       <div class="page-navigation">
@@ -217,22 +200,20 @@
       function showLibrary() {
         document.getElementById('main-content').style.display = 'block';
         document.getElementById('book-page').style.display = 'none';
+        document.querySelector('.navbar').classList.remove('hidden');
       }
 
       // Função para mostrar o livro
       function showBook() {
         document.getElementById('main-content').style.display = 'none';
         document.getElementById('book-page').style.display = 'block';
+        document.querySelector('.navbar').classList.add('hidden');
         startHideTimeout();
       }
 
       // Event listeners para navegação
       document.getElementById('home-link').addEventListener('click', showLibrary);
       document.getElementById('library-link').addEventListener('click', showLibrary);
-
-      document.getElementById('back-link').addEventListener('click', function() {
-        showLibrary();
-      });
 
       document.querySelectorAll('.read-book').forEach(button => {
         button.addEventListener('click', function(event) {
